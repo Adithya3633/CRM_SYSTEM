@@ -1,0 +1,79 @@
+const API_BASE = '/api';
+
+function getToken(): string | null {
+  return localStorage.getItem('crm_token');
+}
+
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const token = getToken();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options.headers as Record<string, string>),
+  };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Request failed' }));
+    throw new Error(err.error || 'Request failed');
+  }
+  return res.json();
+}
+
+export const api = {
+  register: (data: { name: string; email: string; password: string; organizationName: string }) =>
+    request<{ token: string; user: import('./types').User }>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  login: (email: string, password: string) =>
+    request<{ token: string; user: import('./types').User }>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    }),
+
+  getMe: () => request<import('./types').User>('/auth/me'),
+
+  getUsers: () => request<import('./types').User[]>('/auth/users'),
+  createUser: (data: { name: string; email: string; password: string; role: string }) =>
+    request('/auth/users', { method: 'POST', body: JSON.stringify(data) }),
+  updateUser: (id: number, data: Partial<{ name: string; email: string; role: string; password: string }>) =>
+    request(`/auth/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteUser: (id: number) => request(`/auth/users/${id}`, { method: 'DELETE' }),
+
+  getOrganization: () => request<import('./types').Organization>('/organization'),
+  updateOrganization: (data: Partial<import('./types').Organization>) =>
+    request('/organization', { method: 'PUT', body: JSON.stringify(data) }),
+
+  getLeads: (params?: Record<string, string>) => {
+    const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+    return request<import('./types').Lead[]>(`/leads${qs}`);
+  },
+  getLead: (id: number) => request<import('./types').Lead>(`/leads/${id}`),
+  createLead: (data: Partial<import('./types').Lead>) =>
+    request('/leads', { method: 'POST', body: JSON.stringify(data) }),
+  updateLead: (id: number, data: Partial<import('./types').Lead>) =>
+    request(`/leads/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  updateLeadStage: (id: number, stage: string) =>
+    request(`/leads/${id}/stage`, { method: 'PATCH', body: JSON.stringify({ stage }) }),
+  deleteLead: (id: number) => request(`/leads/${id}`, { method: 'DELETE' }),
+
+  getCustomers: (params?: Record<string, string>) => {
+    const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+    return request<import('./types').Customer[]>(`/customers${qs}`);
+  },
+  getCustomer: (id: number) => request<import('./types').Customer>(`/customers/${id}`),
+  createCustomer: (data: Partial<import('./types').Customer>) =>
+    request('/customers', { method: 'POST', body: JSON.stringify(data) }),
+  updateCustomer: (id: number, data: Partial<import('./types').Customer>) =>
+    request(`/customers/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteCustomer: (id: number) => request(`/customers/${id}`, { method: 'DELETE' }),
+  addContact: (customerId: number, data: { name: string; email?: string; phone?: string; role?: string; is_primary?: boolean }) =>
+    request(`/customers/${customerId}/contacts`, { method: 'POST', body: JSON.stringify(data) }),
+  addPurchase: (customerId: number, data: { product: string; amount: number; purchase_date: string; notes?: string }) =>
+    request(`/customers/${customerId}/purchases`, { method: 'POST', body: JSON.stringify(data) }),
+  addNote: (customerId: number, data: { title: string; content?: string; meeting_date: string }) =>
+    request(`/customers/${customerId}/notes`, { method: 'POST', body: JSON.stringify(data) }),
+
+  getDashboard: () => request<import('./types').DashboardData>('/dashboard'),
+};
