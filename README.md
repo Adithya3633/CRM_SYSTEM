@@ -12,6 +12,9 @@ A full-stack customer relationship management platform for sales teams. CRM Syst
 - Organization and team-member administration
 - Responsive Kanban and table views
 - Organization-scoped data access
+## Demo Video
+
+[Watch the CRM System demo](https://drive.google.com/file/d/1nR4OZX0_Hgby5D8zITxcACfECWMkUuJg/view?usp=sharing)
 
 ## Technology
 
