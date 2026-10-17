@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "backend_django": {
+      "root": "backend_django",
+      "framework": "django"
+    },
+    "frontend": {
+      "root": "frontend",
+      "framework": "vite"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": { "service": "backend_django", "path": "/api/$1" }
+    },
+    {
+      "source": "/(.*)",
+      "destination": { "service": "frontend", "path": "/$1" }
+    }
+  ]
+}
