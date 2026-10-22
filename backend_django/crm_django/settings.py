@@ -69,6 +69,14 @@ CORS_ALLOWED_ORIGINS = [
     ).split(',')
     if origin.strip()
 ]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    regex.strip()
+    for regex in os.getenv(
+        'CORS_ALLOWED_ORIGIN_REGEXES',
+        r'^https://crmsystem-[a-z0-9-]+-av748346-5887s-projects\.vercel\.app$',
+    ).split(',')
+    if regex.strip()
+]
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True

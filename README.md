@@ -200,7 +200,7 @@ For a split deployment, set these environment variables:
 - **Render** (Django service): `DJANGO_ALLOWED_HOSTS=crm-system-1pxk.onrender.com`
 - **Render** (Django service): `CORS_ALLOWED_ORIGINS=https://crmsystem-gray.vercel.app`
 
-Set the Vercel variable for the Production environment (and Preview if needed), then redeploy Vercel because Vite embeds `VITE_` variables at build time. Set the Render variables before redeploying its service. For Vercel preview deployments, add each preview URL you use to `CORS_ALLOWED_ORIGINS` as a comma-separated origin. Confirm `https://crm-system-1pxk.onrender.com/api/health` returns `{"status":"ok"}` before testing registration. The frontend can use `/api` as a same-origin fallback for local development.
+Set the Vercel variable for the Production environment (and Preview if needed), then redeploy Vercel because Vite embeds `VITE_` variables at build time. Set the Render variables before redeploying its service. The backend permits preview URLs for this Vercel project using `CORS_ALLOWED_ORIGIN_REGEXES`; override that variable with comma-separated regular expressions if your Vercel preview hostname uses a different project or account suffix. Confirm `https://crm-system-1pxk.onrender.com/api/health` returns `{"status":"ok"}` before testing registration. The frontend can use `/api` as a same-origin fallback for local development.
 
 In the Render service settings, set **Start Command** to:
 

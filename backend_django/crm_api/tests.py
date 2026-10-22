@@ -50,6 +50,27 @@ class LoginViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_allows_preflight_from_project_preview_deployments(self):
+        origin = 'https://crmsystem-ny880x4yu-av748346-5887s-projects.vercel.app'
+        response = self.client.options(
+            '/api/auth/login',
+            HTTP_ORIGIN=origin,
+            HTTP_ACCESS_CONTROL_REQUEST_METHOD='POST',
+            HTTP_ACCESS_CONTROL_REQUEST_HEADERS='content-type',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Access-Control-Allow-Origin'], origin)
+
+    def test_rejects_unrelated_vercel_preview_origin(self):
+        response = self.client.options(
+            '/api/auth/login',
+            HTTP_ORIGIN='https://unrelated-project.vercel.app',
+            HTTP_ACCESS_CONTROL_REQUEST_METHOD='POST',
+        )
+
+        self.assertNotIn('Access-Control-Allow-Origin', response)
+
 
 class SeedDemoCommandTests(TestCase):
     def test_creates_demo_data_once_for_an_empty_database(self):
