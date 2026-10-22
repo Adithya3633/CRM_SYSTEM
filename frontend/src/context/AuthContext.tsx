@@ -5,7 +5,7 @@ import { api } from '../api';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, accountType: 'admin' | 'user') => Promise<void>;
   register: (data: { name: string; email: string; password: string; organizationName: string }) => Promise<void>;
   logout: () => void;
 }
@@ -25,8 +25,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const { token, user } = await api.login(email, password);
+  const login = async (email: string, password: string, accountType: 'admin' | 'user') => {
+    const { token, user } = await api.login(email, password, accountType);
     localStorage.setItem('crm_token', token);
     setUser(user);
   };

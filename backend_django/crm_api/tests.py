@@ -2,8 +2,53 @@ from io import StringIO
 
 from django.core.management import call_command
 from django.test import TestCase
+from rest_framework.test import APIClient
 
 from .models import Contact, Customer, Lead, MeetingNote, Organization, Purchase, User
+
+
+class LoginViewTests(TestCase):
+    def setUp(self):
+        organization = Organization.objects.create(name='Test organization')
+        self.admin = User.objects.create_user(
+            'admin@example.com',
+            'password123',
+            name='Admin',
+            role=User.Role.ADMIN,
+            organization=organization,
+        )
+        User.objects.create_user(
+            'sales@example.com',
+            'password123',
+            name='Sales user',
+            role=User.Role.SALES_EXECUTIVE,
+            organization=organization,
+        )
+        self.client = APIClient()
+
+    def test_accepts_correct_account_type(self):
+        response = self.client.post(
+            '/api/auth/login',
+            {'email': self.admin.email, 'password': 'password123', 'account_type': 'admin'},
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_rejects_mismatched_account_type(self):
+        response = self.client.post(
+            '/api/auth/login',
+            {'email': self.admin.email, 'password': 'password123', 'account_type': 'user'},
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_accepts_legacy_login_without_account_type(self):
+        response = self.client.post(
+            '/api/auth/login',
+            {'email': self.admin.email, 'password': 'password123'},
+        )
+
+        self.assertEqual(response.status_code, 200)
 
 
 class SeedDemoCommandTests(TestCase):

@@ -67,11 +67,16 @@ class LoginView(APIView):
     def post(self, request):
         email = str(request.data.get('email', '')).strip().lower()
         password = request.data.get('password', '')
+        account_type = request.data.get('account_type')
+        if account_type is not None and account_type not in ('admin', 'user'):
+            return Response({'error': 'Choose Admin or Normal User account type'}, status=400)
         if not email or not password:
             return Response({'error': 'Email and password required'}, status=400)
         user = authenticate(request, email=email, password=password)
         if not user:
             return Response({'error': 'Invalid credentials'}, status=401)
+        if account_type is not None and ((account_type == 'admin') != (user.role == User.Role.ADMIN)):
+            return Response({'error': 'This account does not match the selected account type'}, status=403)
         return auth_response(user)
 
 

@@ -41,10 +41,10 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
-  login: (email: string, password: string) =>
+  login: (email: string, password: string, accountType: 'admin' | 'user') =>
     request<{ token: string; user: import('./types').User }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, account_type: accountType }),
     }),
 
   getMe: () => request<import('./types').User>('/auth/me'),
