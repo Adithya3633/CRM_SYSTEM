@@ -208,7 +208,7 @@ In the Render service settings, set **Start Command** to:
 python manage.py migrate --noinput && python manage.py seed_demo && python manage.py collectstatic --noinput && gunicorn crm_django.wsgi:application --bind 0.0.0.0:$PORT
 ```
 
-The seed command populates an empty database with the demo organization and accounts; it skips seeding if users already exist. Demo credentials are publicly documented in this README, so treat this as sample data only and use a persistent production database for real customer data.
+The seed command creates a separate demo organization and skips if that demo organization already exists, so it can seed an existing database without mixing organizations. Demo credentials are publicly documented in this README, so treat this as sample data only and use a persistent production database for real customer data.
 
 ## Security Notes
 

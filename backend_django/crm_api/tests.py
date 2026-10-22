@@ -23,7 +23,7 @@ class SeedDemoCommandTests(TestCase):
         self.assertEqual(Organization.objects.count(), 1)
         self.assertEqual(Lead.objects.count(), 10)
 
-    def test_skips_demo_data_when_database_already_has_a_user(self):
+    def test_seeds_demo_data_without_mixing_existing_organization(self):
         organization = Organization.objects.create(name='Existing organization')
         User.objects.create_user(
             'owner@example.com',
@@ -35,6 +35,10 @@ class SeedDemoCommandTests(TestCase):
 
         call_command('seed_demo', stdout=StringIO())
 
-        self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(Organization.objects.count(), 1)
-        self.assertEqual(Lead.objects.count(), 0)
+        self.assertEqual(User.objects.count(), 5)
+        self.assertEqual(Organization.objects.count(), 2)
+        self.assertEqual(Lead.objects.count(), 10)
+        self.assertEqual(
+            User.objects.get(email='owner@example.com').organization,
+            organization,
+        )

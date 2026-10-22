@@ -7,8 +7,8 @@ class Command(BaseCommand):
     help = 'Create the demo CRM organization, users, leads, and customers.'
 
     def handle(self, *args, **options):
-        if User.objects.exists():
-            self.stdout.write('Database already contains users; skipping demo data.')
+        if User.objects.filter(email='admin@crm.com').exists():
+            self.stdout.write('Demo data already exists.')
             return
         organization = Organization.objects.create(name='Acme Corp', industry='Technology', address='123 Business Ave, San Francisco, CA', phone='+1-555-0100', email='contact@acmecorp.com')
         admin = User.objects.create_user('admin@crm.com', 'password123', name='Admin User', role=User.Role.ADMIN, organization=organization)
