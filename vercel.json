@@ -17,7 +17,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": { "service": "frontend", "path": "/$1" }
+      "destination": { "service": "frontend", "path": "/index.html" }
     }
   ]
 }

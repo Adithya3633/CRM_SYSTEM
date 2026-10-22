@@ -198,9 +198,17 @@ For a split deployment, set these environment variables:
 
 - **Vercel** (`frontend` project): `VITE_API_BASE_URL=https://crm-system-1pxk.onrender.com/api`
 - **Render** (Django service): `DJANGO_ALLOWED_HOSTS=crm-system-1pxk.onrender.com`
-- **Render** (Django service): `CORS_ALLOWED_ORIGINS=https://crmsystem-eb1g9520c-av748346-5887s-projects.vercel.app`
+- **Render** (Django service): `CORS_ALLOWED_ORIGINS=https://crmsystem-gray.vercel.app`
 
-Set the Vercel variable for the Production environment (and Preview if needed), then redeploy Vercel because Vite embeds `VITE_` variables at build time. Set the Render variables before redeploying its service. The Vercel origin above is the URL from the reported browser request; if your Vercel project has a stable production domain, allow that domain instead (or in addition). Confirm `https://crm-system-1pxk.onrender.com/api/health` returns `{"status":"ok"}` before testing registration. The frontend can use `/api` as a same-origin fallback for local development.
+Set the Vercel variable for the Production environment (and Preview if needed), then redeploy Vercel because Vite embeds `VITE_` variables at build time. Set the Render variables before redeploying its service. For Vercel preview deployments, add each preview URL you use to `CORS_ALLOWED_ORIGINS` as a comma-separated origin. Confirm `https://crm-system-1pxk.onrender.com/api/health` returns `{"status":"ok"}` before testing registration. The frontend can use `/api` as a same-origin fallback for local development.
+
+In the Render service settings, set **Start Command** to:
+
+```text
+python manage.py migrate --noinput && python manage.py seed_demo && python manage.py collectstatic --noinput && gunicorn crm_django.wsgi:application --bind 0.0.0.0:$PORT
+```
+
+The seed command populates an empty database with the demo organization and accounts; it skips seeding if users already exist. Demo credentials are publicly documented in this README, so treat this as sample data only and use a persistent production database for real customer data.
 
 ## Security Notes
 
