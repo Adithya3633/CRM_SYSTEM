@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/+$/, '');
 
 function getToken(): string | null {
   return localStorage.getItem('crm_token');
@@ -14,8 +14,23 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   const res = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(err.error || 'Request failed');
+    const errorBody: unknown = await res.json().catch(() => null);
+    if (errorBody && typeof errorBody === 'object') {
+      const body = errorBody as Record<string, unknown>;
+      const message = typeof body.error === 'string'
+        ? body.error
+        : typeof body.detail === 'string'
+          ? body.detail
+          : Object.entries(body)
+            .map(([field, value]) => {
+              const details = Array.isArray(value) ? value.join(', ') : value;
+              return typeof details === 'string' ? `${field}: ${details}` : null;
+            })
+            .filter((detail): detail is string => detail !== null)
+            .join('; ');
+      throw new Error(message || `Request failed (${res.status})`);
+    }
+    throw new Error(`Request failed (${res.status})`);
   }
   return res.json();
 }

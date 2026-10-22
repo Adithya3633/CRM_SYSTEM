@@ -192,6 +192,16 @@ Development defaults are defined in `backend_django/crm_django/settings.py`. Bef
 
 The local SQLite database is intentionally excluded from version control by `.gitignore`. Use migrations and `seed_demo` to initialize a development database.
 
+### Vercel frontend and Render API
+
+For a split deployment, set these environment variables:
+
+- **Vercel** (`frontend` project): `VITE_API_BASE_URL=https://crm-system-1pxk.onrender.com/api`
+- **Render** (Django service): `DJANGO_ALLOWED_HOSTS=crm-system-1pxk.onrender.com`
+- **Render** (Django service): `CORS_ALLOWED_ORIGINS=https://crmsystem-eb1g9520c-av748346-5887s-projects.vercel.app`
+
+Set the Vercel variable for the Production environment (and Preview if needed), then redeploy Vercel because Vite embeds `VITE_` variables at build time. Set the Render variables before redeploying its service. The Vercel origin above is the URL from the reported browser request; if your Vercel project has a stable production domain, allow that domain instead (or in addition). Confirm `https://crm-system-1pxk.onrender.com/api/health` returns `{"status":"ok"}` before testing registration. The frontend can use `/api` as a same-origin fallback for local development.
+
 ## Security Notes
 
 Before production deployment:
