@@ -87,7 +87,7 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173`. Vite proxies `/api` requests to Django on port 8000.
+Open `http://127.0.0.1:5173`. Vite proxies `/api` requests to Django on port 8000. The frontend uses hash-based routes (for example, `/#/customers`) so reloading a page works on static hosts without SPA rewrite support.
 
 ### Health Check
 
