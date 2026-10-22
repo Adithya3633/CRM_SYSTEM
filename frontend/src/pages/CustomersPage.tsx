@@ -88,7 +88,7 @@ export default function CustomersPage() {
       subtitle="Manage customer details, contacts, and history"
       action={<Btn onClick={openCreate}><Plus size={16} className="inline mr-1" />Add Customer</Btn>}
     >
-      <div className="flex flex-wrap gap-3 mb-6">
+      <div className="mb-6 flex flex-wrap gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
         <SearchInput value={search} onChange={setSearch} placeholder="Search customers..." />
         <SelectInput
           value={statusFilter}
@@ -106,10 +106,11 @@ export default function CustomersPage() {
       ) : customers.length === 0 ? (
         <EmptyState message="No customers found" />
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-          <table className="w-full text-sm">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[800px] text-sm">
             <thead className="bg-slate-50">
-              <tr className="text-left text-slate-500">
+              <tr className="text-left text-xs uppercase text-slate-500">
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">Company</th>
                 <th className="px-4 py-3 font-medium">Email</th>
@@ -121,7 +122,7 @@ export default function CustomersPage() {
             </thead>
             <tbody>
               {customers.map((c) => (
-                <tr key={c.id} className="border-t border-slate-100 hover:bg-slate-50">
+                <tr key={c.id} className="border-t border-slate-100 transition-colors hover:bg-slate-50">
                   <td className="px-4 py-3 font-medium">{c.name}</td>
                   <td className="px-4 py-3">{c.company || '—'}</td>
                   <td className="px-4 py-3">{c.email || '—'}</td>
@@ -143,6 +144,7 @@ export default function CustomersPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

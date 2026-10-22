@@ -1,7 +1,8 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, UserCheck, Building2, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, UserCheck, Building2, BriefcaseBusiness, LogOut, Menu, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { ROLE_LABELS } from '../types';
 
 const navItems = [
@@ -13,6 +14,7 @@ const navItems = [
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -30,13 +32,22 @@ export default function Layout() {
       )}
 
       <aside
-        className={`fixed lg:sticky lg:top-0 lg:h-screen inset-y-0 left-0 z-50 w-64 shrink-0 bg-slate-900 text-white flex flex-col transform transition-transform lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 transform flex-col border-r transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
+          theme === 'dark' ? 'bg-slate-900 text-white border-slate-800' : 'bg-white text-slate-900 border-slate-200'
+        } ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="p-6 border-b border-slate-700">
-          <h1 className="text-xl font-bold tracking-tight">CRM System</h1>
-          <p className="text-slate-400 text-sm mt-1">Customer Relationship Management</p>
+        <div className={`p-5 border-b ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">
+              <BriefcaseBusiness size={19} />
+            </span>
+            <div className="min-w-0">
+              <h1 className="text-lg font-bold tracking-tight">CRM System</h1>
+              <p className="mt-0.5 text-xs text-slate-500">Customer Relationship Management</p>
+            </div>
+          </div>
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
@@ -48,7 +59,7 @@ export default function Layout() {
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive ? 'bg-brand-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                    isActive ? 'bg-brand-600 text-white' : theme === 'dark' ? 'text-slate-300 hover:bg-slate-800 hover:text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                 }`
               }
             >
@@ -58,14 +69,24 @@ export default function Layout() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-slate-700">
+        <div className={`p-4 border-t ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
           <div className="px-4 py-2 mb-2">
             <p className="text-sm font-medium truncate">{user?.name}</p>
-            <p className="text-xs text-slate-400 truncate">{user ? ROLE_LABELS[user.role] : ''}</p>
+            <p className="text-xs text-slate-500 truncate">{user ? ROLE_LABELS[user.role] : ''}</p>
           </div>
           <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle color theme"
+            aria-pressed={theme === 'dark'}
+            className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm transition-colors ${theme === 'dark' ? 'text-slate-300 hover:bg-slate-800 hover:text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </button>
+          <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+            className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm transition-colors ${theme === 'dark' ? 'text-slate-300 hover:bg-slate-800 hover:text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
           >
             <LogOut size={18} />
             Sign Out
@@ -74,16 +95,24 @@ export default function Layout() {
       </aside>
 
       <div className="flex min-h-screen min-w-0 flex-1 flex-col">
-        <header className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
-          <button onClick={() => setSidebarOpen(true)} className="p-1">
+        <header className={`flex items-center gap-3 border-b px-4 py-3 lg:hidden ${
+          theme === 'dark' ? 'bg-slate-900 text-white border-slate-800' : 'bg-white text-slate-900 border-slate-200'
+        }`}>
+          <button type="button" onClick={() => setSidebarOpen(true)} aria-label="Open navigation" className="rounded-lg p-1.5 transition-colors hover:bg-slate-100">
             <Menu size={22} />
           </button>
           <span className="font-semibold">CRM System</span>
-          <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1 hidden">
-            <X size={22} />
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            aria-pressed={theme === 'dark'}
+            className="ml-auto rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </header>
-        <main className="min-h-0 flex-1 overflow-auto p-6 lg:p-8">
+        <main className="min-h-0 flex-1 overflow-auto bg-slate-50 p-5 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

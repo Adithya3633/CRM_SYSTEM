@@ -62,7 +62,7 @@ export default function CustomerDetailPage() {
       }
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="font-semibold mb-4">Customer Details</h3>
           <dl className="grid grid-cols-2 gap-4 text-sm">
             <div><dt className="text-slate-500">Email</dt><dd className="font-medium">{customer.email || '—'}</dd></div>
@@ -77,7 +77,7 @@ export default function CustomerDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Contacts</h3>
             <button onClick={() => setModal('contact')} className="text-brand-600 hover:text-brand-700"><Plus size={18} /></button>
@@ -87,7 +87,7 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="space-y-3">
               {customer.contacts?.map((c) => (
-                <div key={c.id} className="border border-slate-100 rounded-lg p-3">
+                <div key={c.id} className="rounded-lg border border-slate-100 p-3">
                   <p className="font-medium text-sm">{c.name} {c.is_primary ? <Badge className="bg-brand-100 text-brand-700 ml-1">Primary</Badge> : null}</p>
                   <p className="text-xs text-slate-500">{c.role}</p>
                   <p className="text-xs text-slate-500">{c.email} · {c.phone}</p>
@@ -97,7 +97,7 @@ export default function CustomerDetailPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Purchase History</h3>
             <button onClick={() => setModal('purchase')} className="text-brand-600 hover:text-brand-700"><Plus size={18} /></button>
@@ -107,7 +107,7 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="space-y-3">
               {customer.purchases?.map((p) => (
-                <div key={p.id} className="border border-slate-100 rounded-lg p-3">
+                <div key={p.id} className="rounded-lg border border-slate-100 p-3">
                   <div className="flex justify-between">
                     <p className="font-medium text-sm">{p.product}</p>
                     <p className="text-sm font-semibold text-brand-600">{formatCurrency(p.amount)}</p>
@@ -120,7 +120,7 @@ export default function CustomerDetailPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Meeting Notes</h3>
             <button onClick={() => setModal('note')} className="text-brand-600 hover:text-brand-700"><Plus size={18} /></button>
@@ -130,7 +130,7 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="space-y-3">
               {customer.meeting_notes?.map((n) => (
-                <div key={n.id} className="border border-slate-100 rounded-lg p-3">
+                <div key={n.id} className="rounded-lg border border-slate-100 p-3">
                   <p className="font-medium text-sm">{n.title}</p>
                   <p className="text-xs text-slate-500">{formatDate(n.meeting_date)} · {n.author_name}</p>
                   {n.content && <p className="text-sm text-slate-600 mt-1">{n.content}</p>}

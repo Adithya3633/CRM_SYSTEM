@@ -116,7 +116,7 @@ export default function LeadsPage() {
         </div>
       }
     >
-      <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative min-w-[240px] flex-1 sm:max-w-sm">
             <Search size={17} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -172,7 +172,7 @@ export default function LeadsPage() {
           {visibleStages.map((stage) => {
             const stageLeads = leads.filter((l) => l.stage === stage.key);
             return (
-              <div key={stage.key} className="group min-h-[220px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100/80 shadow-sm transition-shadow hover:shadow-md">
+              <div key={stage.key} className="group min-h-[220px] overflow-hidden rounded-xl border border-slate-200 bg-slate-100/80 shadow-sm transition-shadow hover:shadow-md">
                 <div className="flex items-center justify-between border-b border-slate-200/80 bg-white/80 px-4 py-3">
                   <div>
                     <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">Pipeline stage</p>
@@ -182,7 +182,7 @@ export default function LeadsPage() {
                 </div>
                 <div className="space-y-3 p-3">
                   {stageLeads.map((lead) => (
-                    <div key={lead.id} className="relative rounded-xl border border-slate-200 border-l-4 border-l-brand-500 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                    <div key={lead.id} className="relative rounded-lg border border-slate-200 border-l-4 border-l-brand-500 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="truncate text-sm font-bold text-slate-900">{lead.name}</p>
@@ -221,10 +221,11 @@ export default function LeadsPage() {
       ) : leads.length === 0 ? (
         <EmptyState message="No leads found" />
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-          <table className="w-full text-sm">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-slate-50">
-              <tr className="text-left text-slate-500">
+              <tr className="text-left text-xs uppercase text-slate-500">
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">Company</th>
                 <th className="px-4 py-3 font-medium">Stage</th>
@@ -238,7 +239,7 @@ export default function LeadsPage() {
               {leads.map((lead) => {
                 const stageInfo = LEAD_STAGES.find((s) => s.key === lead.stage);
                 return (
-                  <tr key={lead.id} className="border-t border-slate-100 hover:bg-slate-50">
+                  <tr key={lead.id} className="border-t border-slate-100 transition-colors hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium">{lead.name}</td>
                     <td className="px-4 py-3">{lead.company || '—'}</td>
                     <td className="px-4 py-3"><Badge className={stageInfo?.color || ''}>{stageLabel(lead.stage)}</Badge></td>
@@ -256,6 +257,7 @@ export default function LeadsPage() {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

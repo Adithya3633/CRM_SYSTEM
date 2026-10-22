@@ -7,6 +7,7 @@ import LeadsPage from './pages/LeadsPage';
 import CustomersPage from './pages/CustomersPage';
 import CustomerDetailPage from './pages/CustomerDetailPage';
 import AdminPage from './pages/AdminPage';
+import { ThemeProvider } from './context/ThemeContext';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -41,9 +42,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <HashRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </ThemeProvider>
     </HashRouter>
   );
 }

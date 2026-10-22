@@ -73,7 +73,7 @@ export default function AdminPage() {
   return (
     <PageHeader title="Administration" subtitle="Manage organization and team members">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="font-semibold mb-4">Organization Settings</h3>
           <form onSubmit={handleSaveOrg}>
             <FormField label="Organization Name"><TextInput value={orgForm.name} onChange={(v) => setOrgForm({ ...orgForm, name: v })} required /></FormField>
@@ -90,7 +90,7 @@ export default function AdminPage() {
           </form>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Team Members</h3>
             <Btn onClick={openCreateUser}><Plus size={16} className="inline mr-1" />Add User</Btn>

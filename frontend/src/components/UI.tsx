@@ -28,7 +28,7 @@ export function KpiCard({ label, value, icon: Icon, color }: { label: string; va
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-slate-500">{label}</p>
-          <p className="text-2xl font-bold mt-1">{value}</p>
+          <p className="text-2xl font-semibold mt-1 text-slate-900">{value}</p>
         </div>
         <div className={`p-3 rounded-lg ${color}`}>
           <Icon size={22} />
@@ -46,7 +46,7 @@ export function Modal({ open, onClose, title, children }: { open: boolean; onClo
       <div className="relative bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-5 border-b border-slate-200">
           <h2 className="text-lg font-semibold">{title}</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
+          <button type="button" onClick={onClose} aria-label="Close dialog" className="rounded-md px-2 py-1 text-xl leading-none text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600">&times;</button>
         </div>
         <div className="p-5">{children}</div>
       </div>
@@ -77,7 +77,7 @@ export function SearchInput({ value, onChange, placeholder = 'Search...', classN
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className={`w-full sm:w-64 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent ${className}`}
+      className={`w-full sm:w-64 px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent ${className}`}
     />
   );
 }
@@ -87,7 +87,7 @@ export function SelectInput({ value, onChange, options, placeholder }: { value: 
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+      className="px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
     >
       {placeholder && <option value="">{placeholder}</option>}
       {options.map((o) => (
@@ -108,7 +108,7 @@ export function Btn({ children, onClick, variant = 'primary', type = 'button', d
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 ${styles[variant]}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${styles[variant]}`}
     >
       {children}
     </button>
@@ -133,7 +133,7 @@ export function TextInput({ value, onChange, type = 'text', placeholder, require
       placeholder={placeholder}
       required={required}
       minLength={minLength}
-      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+      className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
     />
   );
 }
@@ -145,7 +145,7 @@ export function TextArea({ value, onChange, rows = 3, placeholder }: { value: st
       onChange={(e) => onChange(e.target.value)}
       rows={rows}
       placeholder={placeholder}
-      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+      className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
     />
   );
 }
